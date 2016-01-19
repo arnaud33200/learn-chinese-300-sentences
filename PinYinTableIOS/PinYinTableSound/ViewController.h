@@ -16,7 +16,16 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (weak, nonatomic) IBOutlet UILabel *playLabel;
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
+
+@property NSTimer *playerTimer;
+@property NSInteger playSection;
+@property NSInteger playRow;
+
 @property NSMutableArray *sounds;
+@property NSMutableArray *pinyinLabelTexts;
+@property NSMutableArray *translationLabelTexts;
 
 @end
 

@@ -35,6 +35,10 @@
         }
         [self.sounds addObject:a];
     }
+    [self PopulatePinyinLabelTexts];
+    [self PopulateTranslationLabelTexts];
+    
+    self.playLabel.text = @"";
 }
 
 - (AVAudioPlayer *)setPlayerWithPath:(NSString *)path {
@@ -49,6 +53,46 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)playAllSoundsOnTouchUpInside:(id)sender {
+    
+    if (self.playerTimer) {
+        [self.playerTimer invalidate];
+        self.playerTimer = nil;
+        return;
+    }
+    
+    self.playerTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(playSound:) userInfo:nil repeats:NO];
+}
+
+- (void)playSound:(NSTimer *)timer {
+    
+    if (self.playSection > 3 || self.playRow > 4) {
+        [self.playerTimer invalidate];
+        self.playerTimer = nil;
+        self.playRow = 0;
+        self.playSection = 0;
+        self.playLabel.text = @"";
+        return;
+    } else {
+        self.playerTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(playSound:) userInfo:nil repeats:NO];
+    }
+    
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.playRow inSection:self.playSection]
+                                  atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    
+    AVAudioPlayer *player = self.sounds[self.playSection][self.playRow];
+    if (player) {
+        [player play];
+    }
+    NSInteger i = self.playRow + (self.playSection * 5);
+    self.playLabel.text = self.pinyinLabelTexts[i];
+    
+    self.playRow++;
+    if (self.playRow > 4) {
+        self.playRow = 0;
+        self.playSection++;
+    }
+}
 
 #pragma mark - Table view data source
 
@@ -65,113 +109,21 @@
      SoundTableViewCell *cell = (SoundTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"soundCell" forIndexPath:indexPath];
 //     cell.pinyinLabel.text = [NSString stringWithFormat:@"%d-%d", indexPath.section, indexPath.row];
      cell.translationLabel.text = @"";
-     switch (indexPath.section) {
-         case 0:
-             switch (indexPath.row) {
-                 case 0:
-                     cell.pinyinLabel.text = @"Jin Tian";
-                     cell.translationLabel.text = @"Today";
-                     break;
-                 case 1:
-                     cell.pinyinLabel.text = @"Zhong Guo";
-                     cell.translationLabel.text = @"China";
-                     break;
-                 case 2:
-                     cell.pinyinLabel.text = @"Bing Shui";
-                     cell.translationLabel.text = @"Ice water";
-                     break;
-                 case 3:
-                     cell.pinyinLabel.text = @"Zhi Dao";
-                     cell.translationLabel.text = @"To know";
-                     break;
-                 case 4:
-                     cell.pinyinLabel.text = @"Zhen Me";
-                     cell.translationLabel.text = @"Really";
-                     break;
-             }
-             break;
-         case 1:
-             switch (indexPath.row) {
-                 case 0:
-                     cell.pinyinLabel.text = @"Ming Tian";
-                     cell.translationLabel.text = @"Tomorrow";
-                     break;
-                 case 1:
-                     cell.pinyinLabel.text = @"Ming Nia";
-                     cell.translationLabel.text = @"Next Year";
-                     break;
-                 case 2:
-                     cell.pinyinLabel.text = @"Pi Jiu";
-                     cell.translationLabel.text = @"Beer";
-                     break;
-                 case 3:
-                     cell.pinyinLabel.text = @"Rong yi";
-                     cell.translationLabel.text = @"Easy";
-                     break;
-                 case 4:
-                     cell.pinyinLabel.text = @"Shen Me";
-                     cell.translationLabel.text = @"What";
-                     break;
-             }
-             break;
-         case 2:
-             switch (indexPath.row) {
-                 case 0:
-                     cell.pinyinLabel.text = @"Xi Huan";
-                     cell.translationLabel.text = @"To Like";
-                     break;
-                 case 1:
-                     cell.pinyinLabel.text = @"Qi Chuang";
-                     cell.translationLabel.text = @"To get up";
-                     break;
-                 case 2:
-                     cell.pinyinLabel.text = @"Ni Hao";
-                     cell.translationLabel.text = @"Hello";
-                     break;
-                 case 3:
-                     cell.pinyinLabel.text = @"Chao fan";
-                     cell.translationLabel.text = @"Fried Rice";
-                     break;
-                 case 4:
-                     cell.pinyinLabel.text = @"Wo De";
-                     cell.translationLabel.text = @"Mine";
-                     break;
-             }
-             break;
-         case 3:
-             switch (indexPath.row) {
-                 case 0:
-                     cell.pinyinLabel.text = @"Mian Bao";
-                     cell.translationLabel.text = @"Bread";
-                     break;
-                 case 1:
-                     cell.pinyinLabel.text = @"Wen Ti";
-                     cell.translationLabel.text = @"Question";
-                     break;
-                 case 2:
-                     cell.pinyinLabel.text = @"Zhe Li";
-                     cell.translationLabel.text = @"Here";
-                     break;
-                 case 3:
-                     cell.pinyinLabel.text = @"Zai Jian";
-                     cell.translationLabel.text = @"Bye";
-                     break;
-                 case 4:
-                     cell.pinyinLabel.text = @"Xie Xiel";
-                     cell.translationLabel.text = @"Thanks";
-                     break;
-             }
-             break;
-     }
-//     [cell setTonesWithFirst:indexPath.section WithSecond:indexPath.row];
- // Configure the cell...
-//     UITableViewCell *cell = [[UITableViewCell alloc] init];
+     NSInteger i = indexPath.row + (indexPath.section * 5);
+     cell.pinyinLabel.text = self.pinyinLabelTexts[i];
+     cell.translationLabel.text = self.translationLabelTexts[i];
  return cell;
  }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     AVAudioPlayer *player = self.sounds[indexPath.section][indexPath.row];
     if (player) {
+        self.playRow = indexPath.row;
+        self.playSection = indexPath.section;
+        NSInteger i = indexPath.row + (indexPath.section * 5);
+        self.playLabel.text = self.pinyinLabelTexts[i];
+        [self.playerTimer invalidate];
+        self.playerTimer = nil;
         [player play];
     }
 }
@@ -203,48 +155,63 @@
     return 40;
 }
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
+- (void)setPlayerTimer:(NSTimer *)playerTimer {
+    _playerTimer = playerTimer;
+    if (_playerTimer == nil) {
+        [self.playButton setImage:[UIImage imageNamed:@"playButton"] forState:UIControlStateNormal];
+    } else {
+        [self.playButton setImage:[UIImage imageNamed:@"pauseButton"] forState:UIControlStateNormal];
+    }
+}
 
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- } else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
+- (void)PopulatePinyinLabelTexts {
+    self.pinyinLabelTexts = [[NSMutableArray alloc] initWithObjects:
+                             @"Jin Tian",
+                             @"Zhong Guo",
+                             @"Bing Shui",
+                             @"Zhi Dao",
+                             @"Zhen de",
+                             @"Ming Tian",
+                             @"Ming Nian",
+                             @"Pi Jiu", 
+                             @"Rong yi", 
+                             @"Shen Me", 
+                             @"Xi Huan", 
+                             @"Qi Chuang", 
+                             @"Ni Hao", 
+                             @"Chao fan", 
+                             @"Wo De", 
+                             @"Mian Bao", 
+                             @"Wen Ti", 
+                             @"Zhe Li", 
+                             @"Zai Jian", 
+                             @"Xie Xie",
+                             nil];
+}
 
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+- (void)PopulateTranslationLabelTexts {
+    self.translationLabelTexts = [[NSMutableArray alloc] initWithObjects:
+                                  @"Today",
+                                  @"China",
+                                  @"Ice water",
+                                  @"To know",
+                                  @"Really",
+                                  @"Tomorrow",
+                                  @"Next Year", 
+                                  @"Beer", 
+                                  @"Easy", 
+                                  @"What", 
+                                  @"To Like", 
+                                  @"To get up", 
+                                  @"Hello", 
+                                  @"Fried Rice", 
+                                  @"Mine", 
+                                  @"Bread", 
+                                  @"Question", 
+                                  @"Here", 
+                                  @"Bye", 
+                                  @"Thanks",
+                                  nil];
+}
 
 @end

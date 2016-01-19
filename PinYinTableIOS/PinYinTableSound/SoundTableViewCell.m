@@ -13,8 +13,8 @@
 - (void)awakeFromNib {
     // Initialization code
     UIView *bgColorView = [[UIView alloc] init];
-    bgColorView.backgroundColor = [UIColor colorWithRed:0.007 green:0.398 blue:0.533 alpha:1.00];
-    [self setSelectedTextColor:[UIColor colorWithRed:0.007 green:0.398 blue:0.533 alpha:1.00]];
+    bgColorView.backgroundColor = [UIColor colorWithRed:0.006 green:0.341 blue:0.457 alpha:1.00];
+    [self setSelectedBackgroundView:bgColorView];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
