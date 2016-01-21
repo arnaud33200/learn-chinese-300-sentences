@@ -10,8 +10,6 @@
 #import "SoundTableViewCell.h"
 #import "HeaderTableViewCell.h"
 
-#import <AVFoundation/AVFoundation.h>
-
 @interface ViewController ()
 
 @end
@@ -30,20 +28,25 @@
         NSMutableArray *a = [[NSMutableArray alloc] init];
         for (int j=0; j<5; ++j) {
             NSString *path = [NSString stringWithFormat:@"%d-%d-1", i, j];
-            AVAudioPlayer *player = [self setPlayerWithPath:path];
+            AVAudioSectionRowPlayer *player = [self setPlayerWithPath:path];
+            player.section = i;
+            player.row = j;
             [a addObject:player];
         }
         [self.sounds addObject:a];
     }
+    
+    self.playList = [[NSMutableArray alloc] init];
+    
     [self PopulatePinyinLabelTexts];
     [self PopulateTranslationLabelTexts];
     
     self.playLabel.text = @"";
 }
 
-- (AVAudioPlayer *)setPlayerWithPath:(NSString *)path {
+- (AVAudioSectionRowPlayer *)setPlayerWithPath:(NSString *)path {
     NSString *pathOne = [[NSBundle mainBundle] pathForResource:path ofType:@"mp3"];
-    AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:pathOne] error:NULL];
+    AVAudioSectionRowPlayer *player = [[AVAudioSectionRowPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:pathOne] error:NULL];
     [player setNumberOfLoops:0];
     return player;
 }
@@ -60,38 +63,80 @@
         self.playerTimer = nil;
         return;
     }
+    if (self.playList.count == 0) {
+        [self buildPlaylistFromSection:0 ToRow:0];
+    }
     
     self.playerTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(playSound:) userInfo:nil repeats:NO];
 }
 
 - (void)playSound:(NSTimer *)timer {
     
-    if (self.playSection > 3 || self.playRow > 4) {
+    if (self.playList.count == 0) {
         [self.playerTimer invalidate];
         self.playerTimer = nil;
-        self.playRow = 0;
-        self.playSection = 0;
         self.playLabel.text = @"";
         return;
     } else {
         self.playerTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(playSound:) userInfo:nil repeats:NO];
     }
     
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.playRow inSection:self.playSection]
+    AVAudioSectionRowPlayer *player = [self.playList objectAtIndex:0];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:player.row inSection:player.section]
                                   atScrollPosition:UITableViewScrollPositionTop animated:NO];
     
-    AVAudioPlayer *player = self.sounds[self.playSection][self.playRow];
     if (player) {
         [player play];
+        self.lastPlayerPlayed = player;
     }
-    NSInteger i = self.playRow + (self.playSection * 5);
+    NSInteger i = player.row + (player.section * 5);
     self.playLabel.text = self.pinyinLabelTexts[i];
+    [self.playList removeObjectAtIndex:0];
     
-    self.playRow++;
-    if (self.playRow > 4) {
-        self.playRow = 0;
-        self.playSection++;
+}
+
+- (void)buildPlaylistFromSection:(NSInteger)section ToRow:(NSInteger)row {
+    self.playList = [[NSMutableArray alloc] init];
+    
+    for (NSInteger s=section; s<4; ++s) {
+        for (NSInteger r=row; r<5; ++r) {
+            [self.playList addObject:self.sounds[s][r]];
+        }
     }
+    
+    if ([self.randomButton isPressed]) {
+        NSMutableArray *copyPlaylist = [self.playList mutableCopy];
+        self.playList = [[NSMutableArray alloc] init];
+        while (copyPlaylist.count > 0) {
+            NSInteger randomI = [self getRandomNumberBetween:0 to:copyPlaylist.count-1];
+            AVAudioSectionRowPlayer *player = copyPlaylist[randomI];
+            [self.playList addObject:player];
+            [copyPlaylist removeObjectAtIndex:randomI];
+        }
+    }
+}
+
+-(int)getRandomNumberBetween:(int)from to:(int)to {
+    return (int)from + arc4random() % (to-from+1);
+}
+
+- (IBAction)randomPressed:(ToggleUIButton *)sender {
+    [sender togglePressed];
+    
+// MAKE THE CURRENT PLAYLIST RANDOM
+    if (self.lastPlayerPlayed) {
+        NSInteger nextRow = self.lastPlayerPlayed.row + 1;
+        NSInteger nextSection = self.lastPlayerPlayed.section;
+        if (nextRow > 4) {
+            nextRow = 0;
+            nextSection++;
+            if (nextSection > 3) {
+                return;
+            }
+        }
+        [self buildPlaylistFromSection:nextSection ToRow:nextRow];
+    }
+    
 }
 
 #pragma mark - Table view data source
@@ -116,10 +161,12 @@
  }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    AVAudioPlayer *player = self.sounds[indexPath.section][indexPath.row];
+    AVAudioSectionRowPlayer *player = self.sounds[indexPath.section][indexPath.row];
     if (player) {
-        self.playRow = indexPath.row;
-        self.playSection = indexPath.section;
+        
+        // remake the all playlist
+        [self buildPlaylistFromSection:indexPath.section ToRow:indexPath.row];
+
         NSInteger i = indexPath.row + (indexPath.section * 5);
         self.playLabel.text = self.pinyinLabelTexts[i];
         [self.playerTimer invalidate];
@@ -166,26 +213,26 @@
 
 - (void)PopulatePinyinLabelTexts {
     self.pinyinLabelTexts = [[NSMutableArray alloc] initWithObjects:
-                             @"Jin Tian",
-                             @"Zhong Guo",
-                             @"Bing Shui",
-                             @"Zhi Dao",
-                             @"Zhen de",
-                             @"Ming Tian",
-                             @"Ming Nian",
-                             @"Pi Jiu", 
-                             @"Rong yi", 
-                             @"Shen Me", 
-                             @"Xi Huan", 
-                             @"Qi Chuang", 
-                             @"Ni Hao", 
-                             @"Chao fan", 
-                             @"Wo De", 
-                             @"Mian Bao", 
-                             @"Wen Ti", 
-                             @"Zhe Li", 
-                             @"Zai Jian", 
-                             @"Xie Xie",
+                             @"Jīn Tiān",
+                             @"Zhōng Guó",
+                             @"Bīng Shuǐ",
+                             @"Zhī Dào",
+                             @"Zhēn De",
+                             @"Míng tiān",
+                             @"Míng Nián",
+                             @"Pí Jiǔ",
+                             @"Róng Yì",
+                             @"Shén Me",
+                             @"Xǐ Huān",
+                             @"Qǐ Chuáng",
+                             @"Nǐ Hǎo",
+                             @"Chǎo Fàn",
+                             @"Wǒ De",
+                             @"Miàn Bāo",
+                             @"Wèn Tí",
+                             @"Zhè Lǐ",
+                             @"Zài Jiàn",
+                             @"Xiè Xie",
                              nil];
 }
 

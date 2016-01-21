@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		510BA7351C504AD1007CFD85 /* ToggleUIButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 510BA7341C504AD1007CFD85 /* ToggleUIButton.m */; };
+		510BA7381C50504D007CFD85 /* AVAudioSectionRowPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 510BA7371C50504D007CFD85 /* AVAudioSectionRowPlayer.m */; };
 		51BE9A4B1C4DA66C00BF3BB2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BE9A4A1C4DA66C00BF3BB2 /* main.m */; };
 		51BE9A4E1C4DA66C00BF3BB2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BE9A4D1C4DA66C00BF3BB2 /* AppDelegate.m */; };
 		51BE9A511C4DA66C00BF3BB2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BE9A501C4DA66C00BF3BB2 /* ViewController.m */; };
@@ -123,6 +125,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		510BA7331C504AD1007CFD85 /* ToggleUIButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToggleUIButton.h; sourceTree = "<group>"; };
+		510BA7341C504AD1007CFD85 /* ToggleUIButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToggleUIButton.m; sourceTree = "<group>"; };
+		510BA7361C50504D007CFD85 /* AVAudioSectionRowPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVAudioSectionRowPlayer.h; sourceTree = "<group>"; };
+		510BA7371C50504D007CFD85 /* AVAudioSectionRowPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVAudioSectionRowPlayer.m; sourceTree = "<group>"; };
 		51BE9A461C4DA66C00BF3BB2 /* PinYinTableSound.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PinYinTableSound.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51BE9A4A1C4DA66C00BF3BB2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		51BE9A4C1C4DA66C00BF3BB2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -301,6 +307,10 @@
 				51BE9C8A1C4DBC7800BF3BB2 /* SoundTableViewCell.m */,
 				51BE9C8C1C4DBFF200BF3BB2 /* HeaderTableViewCell.h */,
 				51BE9C8D1C4DBFF200BF3BB2 /* HeaderTableViewCell.m */,
+				510BA7331C504AD1007CFD85 /* ToggleUIButton.h */,
+				510BA7341C504AD1007CFD85 /* ToggleUIButton.m */,
+				510BA7361C50504D007CFD85 /* AVAudioSectionRowPlayer.h */,
+				510BA7371C50504D007CFD85 /* AVAudioSectionRowPlayer.m */,
 			);
 			path = PinYinTableSound;
 			sourceTree = "<group>";
@@ -641,7 +651,9 @@
 				51BE9A801C4DAA3300BF3BB2 /* SoundCaseView.m in Sources */,
 				51BE9C881C4DBC3A00BF3BB2 /* TableViewController.m in Sources */,
 				51BE9A4B1C4DA66C00BF3BB2 /* main.m in Sources */,
+				510BA7381C50504D007CFD85 /* AVAudioSectionRowPlayer.m in Sources */,
 				51BE9C8B1C4DBC7800BF3BB2 /* SoundTableViewCell.m in Sources */,
+				510BA7351C504AD1007CFD85 /* ToggleUIButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -869,6 +881,7 @@
 				51BE9A751C4DA66C00BF3BB2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		51BE9A761C4DA66C00BF3BB2 /* Build configuration list for PBXNativeTarget "PinYinTableSoundTests" */ = {
 			isa = XCConfigurationList;
@@ -877,6 +890,7 @@
 				51BE9A781C4DA66C00BF3BB2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		51BE9A791C4DA66C00BF3BB2 /* Build configuration list for PBXNativeTarget "PinYinTableSoundUITests" */ = {
 			isa = XCConfigurationList;
@@ -885,6 +899,7 @@
 				51BE9A7B1C4DA66C00BF3BB2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

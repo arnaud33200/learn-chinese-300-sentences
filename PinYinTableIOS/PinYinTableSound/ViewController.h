@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "SoundCaseView.h"
+#import "ToggleUIButton.h"
 
+#import "AVAudioSectionRowPlayer.h"
 
 @interface ViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
@@ -18,10 +20,11 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *playLabel;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
+@property (weak, nonatomic) IBOutlet ToggleUIButton *randomButton;
 
 @property NSTimer *playerTimer;
-@property NSInteger playSection;
-@property NSInteger playRow;
+@property (strong, atomic) NSMutableArray *playList;
+@property AVAudioSectionRowPlayer *lastPlayerPlayed;
 
 @property NSMutableArray *sounds;
 @property NSMutableArray *pinyinLabelTexts;

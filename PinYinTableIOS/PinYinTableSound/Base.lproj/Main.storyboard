@@ -76,11 +76,18 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LJU-g5-Oct">
-                                <rect key="frame" x="70" y="446" width="230" height="21"/>
+                                <rect key="frame" x="70" y="446" width="136" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.074509803921568626" green="0.59999999999999998" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fLW-K6-MUC" customClass="ToggleUIButton">
+                                <rect key="frame" x="266" y="439" width="34" height="36"/>
+                                <state key="normal" image="randomButton"/>
+                                <connections>
+                                    <action selector="randomPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="w5e-e8-aRa"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -88,6 +95,7 @@
                     <connections>
                         <outlet property="playButton" destination="uv4-Lw-xVb" id="vcO-6M-6zB"/>
                         <outlet property="playLabel" destination="LJU-g5-Oct" id="B7h-V9-brf"/>
+                        <outlet property="randomButton" destination="fLW-K6-MUC" id="TD6-Hu-VaZ"/>
                         <outlet property="tableView" destination="0iM-mK-Qv3" id="ZdL-SE-fIG"/>
                     </connections>
                 </viewController>
@@ -105,5 +113,6 @@
     </scenes>
     <resources>
         <image name="playButton" width="30" height="30"/>
+        <image name="randomButton" width="256" height="256"/>
     </resources>
 </document>
