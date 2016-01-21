@@ -25,9 +25,9 @@
 - (void)setIsPressed:(BOOL)isPressed {
     _isPressed = isPressed;
     if (_isPressed) {
-        self.backgroundColor = [UIColor colorWithRed:0.824 green:0.824 blue:0.824 alpha:1.00];
+        self.alpha = 1.0;
     } else {
-        self.backgroundColor = [UIColor clearColor];
+        self.alpha = 0.5;
     }
 }
 

@@ -76,6 +76,9 @@
         [self.playerTimer invalidate];
         self.playerTimer = nil;
         self.playLabel.text = @"";
+        if (self.loopButton.isPressed) {
+            [self playAllSoundsOnTouchUpInside:nil];
+        }
         return;
     } else {
         self.playerTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(playSound:) userInfo:nil repeats:NO];
@@ -136,8 +139,12 @@
         }
         [self buildPlaylistFromSection:nextSection ToRow:nextRow];
     }
-    
 }
+
+- (IBAction)loopPressed:(ToggleUIButton *)sender {
+    [sender togglePressed];
+}
+
 
 #pragma mark - Table view data source
 

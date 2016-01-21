@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *playLabel;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet ToggleUIButton *randomButton;
+@property (weak, nonatomic) IBOutlet ToggleUIButton *loopButton;
 
 @property NSTimer *playerTimer;
 @property (strong, atomic) NSMutableArray *playList;

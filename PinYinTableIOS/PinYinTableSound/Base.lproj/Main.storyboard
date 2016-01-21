@@ -81,8 +81,15 @@
                                 <color key="textColor" red="0.074509803921568626" green="0.59999999999999998" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fLW-K6-MUC" customClass="ToggleUIButton">
-                                <rect key="frame" x="266" y="439" width="34" height="36"/>
+                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FcH-QS-inf" customClass="ToggleUIButton">
+                                <rect key="frame" x="277" y="443" width="34" height="29"/>
+                                <state key="normal" image="loopButton"/>
+                                <connections>
+                                    <action selector="loopPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="elx-CI-IEp"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fLW-K6-MUC" customClass="ToggleUIButton">
+                                <rect key="frame" x="214" y="439" width="34" height="36"/>
                                 <state key="normal" image="randomButton"/>
                                 <connections>
                                     <action selector="randomPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="w5e-e8-aRa"/>
@@ -93,6 +100,7 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="loopButton" destination="FcH-QS-inf" id="7lQ-u2-iAA"/>
                         <outlet property="playButton" destination="uv4-Lw-xVb" id="vcO-6M-6zB"/>
                         <outlet property="playLabel" destination="LJU-g5-Oct" id="B7h-V9-brf"/>
                         <outlet property="randomButton" destination="fLW-K6-MUC" id="TD6-Hu-VaZ"/>
@@ -112,6 +120,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="loopButton" width="490" height="338"/>
         <image name="playButton" width="30" height="30"/>
         <image name="randomButton" width="256" height="256"/>
     </resources>
